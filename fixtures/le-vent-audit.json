@@ -1,23 +1,23 @@
 {
   "business": {
-    "name": "Le Vent",
-    "category": "Café / Bar",
-    "address": "Weserstraße 32, 12045 Berlin (Neukölln)",
-    "mapsUrl": "https://www.google.com/maps/search/Le+Vent+Berlin"
+    "name": "Café Le Vent",
+    "category": "Café",
+    "address": "Köpenicker Str. 44, 10179 Berlin (Mitte)",
+    "mapsUrl": "https://www.google.com/maps/search/Caf%C3%A9+Le+Vent+K%C3%B6penicker+Str.+44+Berlin"
   },
   "items": [
     {
       "item_id": "google_profile",
       "status": "partial",
-      "evidence": "Google Maps listing found for 'Le Vent' on Weserstraße with 4.5 stars from 128 reviews and 6 photos, but no opening hours are listed and the phone number field is empty.",
-      "why": "Most new customers find a café on Google Maps first. Missing hours is the number one reason people give up and go elsewhere.",
+      "evidence": "Google Maps listing found for 'Café Le Vent' on Köpenicker Str. 44 with 4.6 stars from 321 reviews, opening hours and 94 photos. But no phone number is listed, and the website field points to a Facebook page with no posts since March 2021.",
+      "why": "Most new customers find a café on Google Maps first. A phone number and a working link are what turn a look into a visit.",
       "impact_stat_id": null,
       "effort": "minutes"
     },
     {
       "item_id": "website",
       "status": "missing",
-      "evidence": "No website found in the first 10 search results for 'Le Vent Berlin'. Results are only Google Maps, Yelp, TripAdvisor and a Neukölln blog post. The Google listing has no website link.",
+      "evidence": "No website found. The Google listing links only to facebook.com/LeVentCoffee, and search results are only Google Maps, Yelp, Uber Eats and review directories.",
       "why": "A one-page site is the one place you control: menu, hours, address and a way to contact you, without depending on other platforms.",
       "impact_stat_id": null,
       "effort": "hours"
@@ -25,15 +25,15 @@
     {
       "item_id": "impressum",
       "status": "missing",
-      "evidence": "No website exists, so there is no Impressum or privacy notice. Both are legally required as soon as a business website goes live in Germany.",
+      "evidence": "No website exists, so there is no Impressum or privacy notice of your own. The only legal notice found is on the Uber Eats listing.",
       "why": "German law requires an Impressum and a privacy page on any business site. Missing them can lead to warning letters and fines.",
       "impact_stat_id": null,
       "effort": "minutes"
     },
     {
       "item_id": "consistent_info",
-      "status": "partial",
-      "evidence": "The Instagram bio lists opening hours 'Mo–Sa 18–02' and the address, but the Google listing has no hours at all. Yelp shows an older phone number that does not appear anywhere else.",
+      "status": "missing",
+      "evidence": "Three different phone numbers and three versions of the opening hours appear across Google, Apple Maps, Yelp, OpenStreetMap and directories. A Google review from April 2025 says the café was listed as open but was closed.",
       "why": "When hours or phone numbers differ between platforms, customers show up to a closed door or call a dead line, and Google ranks the listing lower.",
       "impact_stat_id": null,
       "effort": "minutes"
@@ -49,7 +49,7 @@
     {
       "item_id": "review_replies",
       "status": "missing",
-      "evidence": "Of the 10 most recent Google reviews (May to October 2026), 0 have an owner reply, including two 2-star reviews about slow service on weekends.",
+      "evidence": "Only 1 of 321 Google reviews has an owner reply, from 2019. Five 1–2 star reviews from 5–6 September 2026 about rude staff have no reply, including one in Turkish that asks the owner to get in touch.",
       "why": "Replying shows future customers that someone cares, and it is the cheapest way to soften a bad review.",
       "impact_stat_id": "stat_reviews_read",
       "effort": "minutes"
@@ -57,39 +57,39 @@
     {
       "item_id": "online_booking",
       "status": "missing",
-      "evidence": "No reservation or booking link on the Google listing or Instagram profile. The Instagram bio says 'Reservierung per DM', which is manual.",
-      "why": "A booking link means people can reserve a table at 23:00 without anyone answering messages.",
+      "evidence": "No ordering, booking or menu link on the Google listing. The Uber Eats listing has the full menu, but delivery is switched off.",
+      "why": "An online order or pre-order link lets people buy from you when nobody has time to answer the phone.",
       "impact_stat_id": null,
       "effort": "hours"
     },
     {
       "item_id": "social_channel",
-      "status": "have",
-      "evidence": "Instagram account @levent.berlin found with roughly 2,100 followers; the most recent post is from 9 October 2026 (a weekend DJ announcement).",
-      "why": "One active channel keeps regulars informed about events and specials and gives new customers a feel for the place.",
+      "status": "partial",
+      "evidence": "Instagram account @cafe_le_vent found with 242 followers and 6 posts, but the last post is from 16 May 2023. The Facebook page (118 followers) has had no posts since March 2021.",
+      "why": "One active channel keeps regulars informed about specials and gives new customers a feel for the place.",
       "impact_stat_id": null,
       "effort": "minutes"
     },
     {
       "item_id": "card_payment",
-      "status": "unknown",
-      "evidence": "Not visible online. One Yelp review from 2025 mentions 'cash only', but this may be out of date.",
+      "status": "have",
+      "evidence": "OpenStreetMap and Apple Maps list cash, Maestro and contactless payment including Apple Pay.",
       "why": "Many guests, especially tourists, no longer carry cash. Card and contactless payment avoids lost sales at the counter.",
       "impact_stat_id": null,
       "effort": "hours"
     },
     {
       "item_id": "customer_list",
-      "status": "unknown",
-      "evidence": "Cannot be checked from the web. Ask the owner whether they collect emails or WhatsApp numbers.",
-      "why": "A list of regulars you can message directly is the cheapest way to fill a quiet Tuesday or announce an event.",
+      "status": "partial",
+      "evidence": "A digital stamp card through gobonki started in June 2026 (gobonki's Instagram post). No newsletter or WhatsApp list was found.",
+      "why": "A list of regulars you can message directly is the cheapest way to fill a quiet Tuesday or announce something new.",
       "impact_stat_id": null,
       "effort": "hours"
     },
     {
       "item_id": "ai_assistant",
       "status": "unknown",
-      "evidence": "Cannot be checked from the web. Ask the owner how they handle DMs and common questions.",
+      "evidence": "Cannot be checked from the web. Ask the owner how they handle messages and common questions.",
       "why": "An AI helper can answer 'Are you open on Sunday?' and draft replies to messages, saving time every day.",
       "impact_stat_id": null,
       "effort": "hours"
@@ -103,6 +103,6 @@
       "effort": "days"
     }
   ],
-  "score": 24,
+  "score": 21,
   "generatedAt": "2026-10-17T12:00:00.000Z"
 }
