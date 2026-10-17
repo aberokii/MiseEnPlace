@@ -1,21 +1,21 @@
-
-!.env.example
-# Dependencies / build
-# Editors
-# Env / secrets
-# OS
-*.log
-*.pyc
-*.swp
-.DS_Store
+# Secrets (never commit)
 .env
 .env.*
-.idea/
-.venv/
-.vscode/
+!.env.example
+
+# OS / editors
+.DS_Store
 Thumbs.db
-__pycache__/
-build/
-dist/
+.vscode/
+.idea/
+*.swp
+*.log
+
+# Dependencies / build
 node_modules/
+dist/
+build/
+__pycache__/
+*.pyc
+.venv/
 venv/
