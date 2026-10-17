@@ -14,8 +14,8 @@ const FPS = 30;
 const T = (q, dur) => ({ dur, alpha: true, file: 'text', query: '?' + q });
 const C = (q, dur, alpha = true) => ({ dur, alpha, file: 'text', query: '?' + q });
 const CARDS = {
-  endcard:  { dur: 8.2, alpha: false },
-  v_intro:  C('bg=1&lines=Small business owners know|they should be online.|~But not what to do first.|~Or if it is even worth it.&accent=online,first&pos=center&style=pop&gap=600&start=400', 8, false),
+  endcard:  { dur: 9.1, alpha: false },
+  v_intro:  C('bg=1&lines=Small business owners know|they should be online.|~But not what to do first.|~Or if it is even worth it.&accent=online,first&pos=center&style=pop&gap=600&start=600', 10, false),
   v_phone:  C('lines=Meet Mise en Place.|~Type your business name.|~See what is missing online.|~Fix it in minutes.&accent=mise,en,place&mute=&pos=left&style=pop&gap=900&start=800&step=160', 20.3),
   c01: C('lines=Type the name of your business.&accent=name&pos=bottom&style=pop', 6),
   c02: C('lines=Check that it is really you.&accent=you&pos=bottom&style=pop', 5),
