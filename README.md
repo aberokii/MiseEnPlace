@@ -36,7 +36,7 @@ npm run dev             # open http://localhost:3000
 Demo without waiting for a live web search: open
 `http://localhost:3000/audit?name=Café+Le+Vent&city=Berlin&trade=Café&cached=1`
 
-**Live link (if any):** not deployed; runs locally.
+**Live link (if any):** https://mise-en-place-dun.vercel.app
 
 ## Screenshots / demo
 Demo video: <add the video link>
