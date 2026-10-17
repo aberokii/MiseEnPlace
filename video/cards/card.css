@@ -1,0 +1,27 @@
+/* Video-only layout on top of the product stylesheet. No new colours, fonts, radii or easing: everything
+   below reuses the tokens in components/audit/audit.css. */
+html,body{width:1920px;height:1080px;overflow:hidden;background:#fff}
+body.alpha,html:has(body.alpha){background:transparent}
+.frame{position:relative;width:1920px;height:1080px;display:flex;align-items:center;justify-content:center;padding:120px}
+.stack{display:flex;flex-direction:column;gap:28px;align-items:flex-start;max-width:1400px}
+.frame h1{font-size:96px;line-height:1.02;margin:0}
+.frame .lede{font-size:34px;max-width:1200px;margin:0}
+.frame .eyebrow{font-size:22px;margin:0 0 20px}
+.frame .logo{font-size:64px}
+.st.big{height:64px;padding:0 26px;font-size:26px;gap:12px;border-radius:999px}
+.st.big svg{width:26px;height:26px}
+/* motion primitives, all on the design easing */
+.in{animation:fu 600ms var(--ease) both;animation-delay:var(--d,0ms)}
+.in-x{animation:fx 600ms var(--ease) both;animation-delay:var(--d,0ms)}
+@keyframes fx{from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:none}}
+.pop{animation:pp 520ms var(--ease) both;animation-delay:var(--d,0ms)}
+@keyframes pp{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+.out{animation:fo 400ms var(--ease) both;animation-delay:var(--d,0ms)}
+@keyframes fo{to{opacity:0;transform:translateY(-8px)}}
+.hold{opacity:0;animation:hd 1ms linear both;animation-delay:var(--d,0ms)}
+@keyframes hd{to{opacity:1}}
+.badges{position:absolute;left:120px;bottom:120px;display:flex;flex-direction:column;gap:18px}
+.lower{position:absolute;left:120px;bottom:110px;display:flex;align-items:center;gap:20px;background:#fff;border-radius:999px;padding:14px 28px 14px 14px;box-shadow:0 6px 20px rgba(0,0,0,.14)}
+.lower .av{width:64px;height:64px;font-size:22px}
+.lower b{font-size:28px;letter-spacing:-.02em}
+.lower span{font-size:20px;color:var(--mute)}

@@ -26,3 +26,7 @@ out/
 next-env.d.ts
 *.tsbuildinfo
 .vercel
+
+# Demo video renders and footage
+video/out/
+video/footage/

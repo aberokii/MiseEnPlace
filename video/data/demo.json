@@ -1,0 +1,81 @@
+{
+  "_note": "Demo data for the 2-minute video only. Facts come from docs/le-vent-research.md (verified 2026-10-17). Everything under 'hypothetical' is realistic sample output standing in for parts of the product not finished at recording time. Stats are DEMO VALUES: verify or replace from data/stats.json (task T8) before the final render.",
+  "business": {
+    "name": "Café Le Vent",
+    "short": "Le Vent",
+    "address": "Köpenicker Str. 44, 10179 Berlin",
+    "district": "Berlin-Mitte",
+    "category": "Café · coffee, French pastries, sandwiches, ice cream",
+    "rating": 4.6,
+    "reviewCount": 321,
+    "ownerReplies": 1,
+    "hours": "Mo–Fr 08:00–16:00 · Sa–So 10:00–15:00",
+    "instagram": "@cafe_le_vent · 242 followers · last post May 2023",
+    "facebook": "118 followers · last post March 2021"
+  },
+  "scoreBefore": 21,
+  "scoreAfter": 54,
+  "statuses": {
+    "google_profile": "partial",
+    "website": "missing",
+    "impressum": "missing",
+    "consistent_info": "missing",
+    "mobile_friendly": "missing",
+    "review_replies": "missing",
+    "online_booking": "missing",
+    "social_channel": "partial",
+    "card_payment": "have",
+    "customer_list": "partial",
+    "ai_assistant": "unknown",
+    "bookkeeping": "unknown"
+  },
+  "hookBadges": [
+    { "status": "missing", "label": "No website" },
+    { "status": "missing", "label": "1 reply to 321 reviews" },
+    { "status": "missing", "label": "3 different phone numbers online" }
+  ],
+  "stats_demo": [
+    { "id": "stat_reviews_read", "item_id": "review_replies", "value": "75%", "claim": "of consumers regularly read online reviews when browsing local businesses", "source": "BrightLocal, Local Consumer Review Survey", "year": 2024, "verify": true },
+    { "id": "stat_reply_trust", "item_id": "review_replies", "value": "88%", "claim": "would use a business that replies to all its reviews", "source": "BrightLocal, Local Consumer Review Survey", "year": 2022, "verify": true },
+    { "id": "stat_mobile_search", "item_id": "mobile_friendly", "value": "76%", "claim": "of people who search nearby on their phone visit a business within a day", "source": "Google / Ipsos", "year": 2016, "verify": true }
+  ],
+  "hypothetical": {
+    "website": {
+      "title": "Café Le Vent",
+      "tagline": "Coffee, croissants and a quiet table in Mitte.",
+      "sections": ["Menu", "Hours", "Find us", "Impressum"],
+      "menu": ["Flat white · 3,80", "Croissant · 2,60", "Baguette sandwich · 6,50", "Ice cream · 2,50"],
+      "impressum": ["Angaben gemäß § 5 TMG", "Café Le Vent", "Inhaber: [Name eintragen]", "Köpenicker Str. 44, 10179 Berlin", "E-Mail: [E-Mail eintragen]", "Datenschutzerklärung: siehe /datenschutz"]
+    },
+    "replies": [
+      {
+        "review": "The staff were extremely rude and unfriendly. Unfortunately, the poor service made the overall experience unpleasant.",
+        "rating": 1,
+        "reply": "Thank you for telling us. This is not how we want anyone to feel at Le Vent, and we're sorry. We've talked it through with the team. If you give us another chance, your next coffee is on us."
+      },
+      {
+        "review": "Der Kaffee schmeckt super, aber der Service lässt leider sehr zu wünschen übrig. Die beiden Damen an der Kasse waren extrem unfreundlich.",
+        "rating": 2,
+        "reply": "Danke für das ehrliche Feedback und schön, dass der Kaffee geschmeckt hat. Für den Umgang an der Kasse möchten wir uns entschuldigen, so soll es bei uns nicht laufen. Wir haben das im Team besprochen und freuen uns, wenn Sie uns noch eine Chance geben."
+      },
+      {
+        "review": "Lütfen işletme sahibi iletişime geçebilir mi? Çalışanlar tarafından çocuk gibi azarlandık.",
+        "rating": 2,
+        "reply": "Merhaba, yorumunuz için teşekkür ederiz ve yaşadıklarınız için özür dileriz. Böyle bir davranış kabul edilemez. Sizinle doğrudan konuşmak isteriz, lütfen bize mesaj gönderin."
+      }
+    ],
+    "learn": {
+      "title": "What the AI just did",
+      "lines": [
+        "It read your three newest critical reviews, in three languages.",
+        "It answered in your voice: thank, apologise, say what changes, invite back.",
+        "Next time: open the review, paste it into any AI assistant, ask for a reply with those four parts."
+      ]
+    },
+    "nextSteps": [
+      { "n": 1, "label": "Publish the one-page site", "effort": "10 min" },
+      { "n": 2, "label": "Post the three review replies", "effort": "5 min" },
+      { "n": 3, "label": "Fix the phone number on Google, Apple, Yelp", "effort": "15 min" }
+    ]
+  }
+}
