@@ -1,10 +1,10 @@
-# PRD: AI Coach for Small Businesses (Impact Lab MVP)
+# PRD: Mise en Place, an AI Coach for Small Businesses (Impact Lab MVP)
 
-Team BizOnPlus · Claude Impact Lab Berlin · 17 Oct 2026
+Product: Mise en Place · Team: BizOnPlus · Claude Impact Lab Berlin · 17 Oct 2026
 
 ## TL;DR
 
-We're building an AI coach that tells a small business owner what digital basics they have, what's missing, and what each gap costs them. It then helps them fix the gaps, building the simple ones on the spot. It fits the theme "AI education for everyone": the owner learns why each item matters and sees AI do real work for their business.
+We're building **Mise en Place**, an AI coach that tells a small business owner what digital basics they have, what's missing, and what each gap costs them. It then helps them fix the gaps, building the simple ones on the spot. It fits the theme "AI education for everyone": the owner learns why each item matters and sees AI do real work for their business.
 
 **One-line pitch:** "Type your business name. In two minutes you know what's missing, what it's costing you, and the first fix is already built."
 

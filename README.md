@@ -6,7 +6,7 @@
 >
 > 🔑 Set your API key first: `cp .env.example .env`, then paste your key into `.env` (it's git-ignored, never commit it).
 
-# BizOnPlus
+# Mise en Place
 
 **One line:** An AI coach that audits a small business's digital basics, explains what's missing and why it matters, and builds the first fix on the spot.
 
