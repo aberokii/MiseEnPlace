@@ -8,7 +8,9 @@
 
 # BizOnPlus
 
-**One line:** <what it does, for whom>
+**One line:** An AI coach that audits a small business's digital basics, explains what's missing and why it matters, and builds the first fix on the spot.
+
+📄 Full product spec: [docs/PRD.md](docs/PRD.md) · Event rules and judging: [docs/EVENT.md](docs/EVENT.md)
 
 ## The problem
 <Who has this problem, and why it matters. 2–3 sentences.>
