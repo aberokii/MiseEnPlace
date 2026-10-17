@@ -2,19 +2,109 @@
   {
     "id": "stat_reviews_read",
     "item_id": "review_replies",
-    "claim": "PLACEHOLDER: share of consumers who read online reviews before visiting a local business",
-    "value": "9 in 10",
-    "source": "PLACEHOLDER source, to be replaced by the research task (T8)",
-    "url": "https://example.com/placeholder",
-    "year": 2025
+    "claim": "of US consumers read online reviews for local businesses",
+    "value": "97%",
+    "source": "BrightLocal, Local Consumer Review Survey 2026 (1,002 US adults)",
+    "url": "https://www.brightlocal.com/research/local-consumer-review-survey/",
+    "year": 2026
+  },
+  {
+    "id": "stat_reviews_expect_reply",
+    "item_id": "review_replies",
+    "claim": "of US consumers expect business owners to respond to their reviews",
+    "value": "89%",
+    "source": "BrightLocal, Local Consumer Review Survey 2026 (1,002 US adults)",
+    "url": "https://www.brightlocal.com/research/local-consumer-review-survey/",
+    "year": 2026
+  },
+  {
+    "id": "stat_reviews_reply_trust",
+    "item_id": "review_replies",
+    "claim": "of US consumers are likely to use a business that responds to all of its reviews",
+    "value": "80%",
+    "source": "BrightLocal, Local Consumer Review Survey 2026 (1,002 US adults)",
+    "url": "https://www.brightlocal.com/research/local-consumer-review-survey/",
+    "year": 2026
   },
   {
     "id": "stat_mobile_search",
     "item_id": "mobile_friendly",
-    "claim": "PLACEHOLDER: share of local business searches that happen on a phone",
-    "value": "6 in 10",
-    "source": "PLACEHOLDER source, to be replaced by the research task (T8)",
-    "url": "https://example.com/placeholder",
+    "claim": "of web visits in Germany come from phones (vs. 38% desktop)",
+    "value": "60%",
+    "source": "StatCounter Global Stats, Germany, September 2026 (59.85% mobile)",
+    "url": "https://gs.statcounter.com/platform-market-share/desktop-mobile-tablet/germany",
+    "year": 2026
+  },
+  {
+    "id": "stat_website_small",
+    "item_id": "website",
+    "claim": "of small EU businesses (10-49 staff) have a website",
+    "value": "77%",
+    "source": "Eurostat, Digital economy and society statistics - enterprises (76.66%)",
+    "url": "https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Digital_economy_and_society_statistics_-_enterprises",
     "year": 2025
+  },
+  {
+    "id": "stat_social_small",
+    "item_id": "social_channel",
+    "claim": "of small EU businesses (10-49 staff) use social media",
+    "value": "61%",
+    "source": "Eurostat, Digital economy and society statistics - enterprises (60.59%)",
+    "url": "https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Digital_economy_and_society_statistics_-_enterprises",
+    "year": 2025
+  },
+  {
+    "id": "stat_social_de",
+    "item_id": "social_channel",
+    "claim": "of German companies (20+ staff) have at least one social media profile",
+    "value": "80%",
+    "source": "Bitkom survey of 604 companies, press release 26 Aug 2025",
+    "url": "https://www.bitkom.org/Presse/Presseinformation/8-von-10-Unternehmen-haben-Social-Media-Profil",
+    "year": 2025
+  },
+  {
+    "id": "stat_ai_small_eu",
+    "item_id": "ai_assistant",
+    "claim": "of small EU businesses (10-49 staff) already use AI",
+    "value": "17%",
+    "source": "Eurostat, Use of artificial intelligence in enterprises (17%)",
+    "url": "https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Use_of_artificial_intelligence_in_enterprises",
+    "year": 2025
+  },
+  {
+    "id": "stat_ai_de",
+    "item_id": "ai_assistant",
+    "claim": "of German companies (10+ staff) use AI, up from 12% a year earlier",
+    "value": "20%",
+    "source": "Destatis press release 444/2024, 25 Nov 2024",
+    "url": "https://www.destatis.de/DE/Presse/Pressemitteilungen/2024/11/PD24_444_52911.html",
+    "year": 2024
+  },
+  {
+    "id": "stat_cashless_de",
+    "item_id": "card_payment",
+    "claim": "of all purchases in Germany were paid without cash (cash: 45%)",
+    "value": "55%",
+    "source": "Deutsche Bundesbank, Payment behaviour in Germany in 2025",
+    "url": "https://bundesbank.de/en/press/press-releases/payment-behaviour-in-germany-in-2025-964738",
+    "year": 2025
+  },
+  {
+    "id": "stat_mobile_pay_de",
+    "item_id": "card_payment",
+    "claim": "of all payments in Germany were made with a phone or other mobile payment, up 4 points since 2023",
+    "value": "10%",
+    "source": "Deutsche Bundesbank, Payment behaviour in Germany in 2025",
+    "url": "https://bundesbank.de/en/press/press-releases/payment-behaviour-in-germany-in-2025-964738",
+    "year": 2025
+  },
+  {
+    "id": "stat_impressum_fine",
+    "item_id": "impressum",
+    "claim": "Maximum fine for a missing or wrong Impressum (EUR 50,000)",
+    "value": "up to 50,000 EUR",
+    "source": "Digitale-Dienste-Gesetz (DDG) section 33, German federal law",
+    "url": "https://www.gesetze-im-internet.de/ddg/__33.html",
+    "year": 2024
   }
 ]
