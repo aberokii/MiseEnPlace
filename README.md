@@ -47,9 +47,9 @@ Demo video: <add the video link>
 |---|---|
 | Rohan Khinvasara | Builder: contracts, real audit, review replies |
 | Akram Alfawakheeri | Builder: website builder, wiring the UI to the APIs |
-| Hanny Kumar | Builder: guide steps |
+| Hanny Kumar | Builder: guide steps, sourced statistics |
 | Felix | Product & design: search, audit and results screens |
-| Gerad Ambrose | Research & pitch: Le Vent data, sourced statistics, demo |
+| Gerad Ambrose | Research & pitch: Le Vent data and reviews, demo |
 
 ## Credits
 - [Next.js](https://nextjs.org), [React](https://react.dev), [Tailwind CSS](https://tailwindcss.com)
