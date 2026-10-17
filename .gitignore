@@ -14,7 +14,7 @@ Thumbs.db
 # Dependencies / build
 node_modules/
 dist/
-build/
+/build/
 __pycache__/
 *.pyc
 .venv/
