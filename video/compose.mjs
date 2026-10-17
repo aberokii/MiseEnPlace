@@ -9,8 +9,8 @@ const OVERLAYS = [                                                        // [fi
   ['out/t_name.mov',   0.3, 5],
   ['out/t_audit.mov', 11.0, 5],
   ['out/t_learn.mov', 30.0, 5],
-  ['out/t_result.mov', 46.5, 6],
-  ['out/t_build.mov', 56.0, 5],
+  ['out/t_result.mov', 52.5, 5],
+  ['out/t_build.mov', 57.8, 5],
 ];
 const inputs = [];
 BASE.forEach(f => inputs.push('-i', f));
