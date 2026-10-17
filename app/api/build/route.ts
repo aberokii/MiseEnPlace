@@ -5,7 +5,8 @@ import { buildWebsite } from '@/lib/build/website';
 import { AuditResultSchema } from '@/lib/types';
 import type { BuildRequest, BuildResponse } from '@/lib/types';
 
-export const maxDuration = 60;
+// A website build takes 13-31s and may retry once, so 60s is not enough headroom.
+export const maxDuration = 120;
 
 const BuildRequestSchema = z.object({
   item_id: z.enum(['website', 'review_replies']),
@@ -30,9 +31,9 @@ export async function POST(req: Request) {
     }
     return NextResponse.json(await stubReviewReplies(body));
   } catch (err) {
+    // Raw SDK errors carry API JSON and request ids; log them, show the owner a friendly line.
     console.error('[build]', err);
-    const message = err instanceof Error ? err.message : 'Something went wrong while building.';
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json({ error: 'We could not build this right now. Please try again.' }, { status: 500 });
   }
 }
 

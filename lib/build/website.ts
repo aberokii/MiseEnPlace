@@ -105,5 +105,5 @@ export function sanitizeBody(html: string): string {
     .replace(/<(script|style|iframe|object|embed|svg|link|meta|img|base)\b[^>]*>/gi, '')
     .replace(/<\/?(html|head|body)\b[^>]*>/gi, '')
     .replace(/\s+(on[a-z]+|style)\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '')
-    .replace(/(href|src)\s*=\s*(["'])\s*javascript:[^"']*\2/gi, '$1="#"');
+    .replace(/(href|src)\s*=\s*(["']?)\s*javascript:[^"'\s>]*\2/gi, '$1="#"');
 }
