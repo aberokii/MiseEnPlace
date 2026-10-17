@@ -1,0 +1,20 @@
+[
+  {
+    "id": "stat_reviews_read",
+    "item_id": "review_replies",
+    "claim": "PLACEHOLDER: share of consumers who read online reviews before visiting a local business",
+    "value": "9 in 10",
+    "source": "PLACEHOLDER source, to be replaced by the research task (T8)",
+    "url": "https://example.com/placeholder",
+    "year": 2025
+  },
+  {
+    "id": "stat_mobile_search",
+    "item_id": "mobile_friendly",
+    "claim": "PLACEHOLDER: share of local business searches that happen on a phone",
+    "value": "6 in 10",
+    "source": "PLACEHOLDER source, to be replaced by the research task (T8)",
+    "url": "https://example.com/placeholder",
+    "year": 2025
+  }
+]

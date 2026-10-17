@@ -92,3 +92,46 @@ If the team is behind, suggest cutting scope instead of working faster.
   and the video link opens for anyone.
 - Agenda, rules and judging are also in the event repo:
   https://github.com/Claude-Community-Berlin/claude-impact-lab-berlin-2026-10-17
+
+---
+
+# Mise en Place: how this repo is split (read before coding)
+
+Product spec: `docs/PRD.md`. Stack: Next.js (App Router) + TypeScript strict + Tailwind + `@anthropic-ai/sdk` + `zod`, deployed on Vercel.
+Run locally: `npm install`, `cp .env.example .env` (paste `ANTHROPIC_API_KEY`), `npm run dev`. Before pushing: `npm run typecheck && npm run build`.
+No new dependencies without telling the team in the PR. The API key stays server-side (route handlers only, never in client components).
+
+## Contracts (owned by Dev 1 / T0, do not change in other tasks)
+These files are the shared agreement between all five people. If you think one must change, ask Dev 1 instead of editing:
+- `lib/types.ts`: all TypeScript types + zod schemas (`AuditItem`, `AuditResult`, `AuditEvent`, `BuildRequest/Response`, `GuideRequest/Response`, `Stat`, ...).
+- `lib/checklist.ts`: the 12 fixed checklist items (`CHECKLIST`, `getItem`, `itemsByTier`). The AI never invents new items.
+- `lib/score.ts`: `computeScore(items)` (must 3 / good 2 / nice 1; have 1 / partial 0.5 / missing 0; `unknown` skipped).
+- `lib/stats.ts`: helpers over `data/stats.json` (`getStat`, `statsForItem`). Works with any number of entries.
+- `fixtures/le-vent-audit.json`: the demo business audit, also the cached fallback on stage.
+- The API shapes:
+  - `POST /api/audit` body `BusinessInput` -> streams NDJSON (`Content-Type: application/x-ndjson`), one `AuditEvent` per line, last line is `{type:'result', result: AuditResult}`.
+  - `POST /api/build` body `BuildRequest` -> JSON `BuildResponse` (`kind: 'html'` for website, `kind: 'replies'` for review replies).
+  - `POST /api/guide` body `GuideRequest` -> JSON `GuideResponse`.
+- Starter files, leave alone: `app/api/chat/route.ts`, `lib/prompt.ts` (exports the shared `MODEL`), `lib/tools.ts` (web_search / web_fetch tool definitions).
+
+The three API routes are currently STUBS that return fixture data (marked `// STUB - replaced in T…`). The UI can be built against them today; replacing a stub must keep the exact request/response shape.
+
+## Who owns which folder
+| Task | Owner | Folders / files | What it does |
+|---|---|---|---|
+| T0 | Dev 1 | contracts above, scaffold, `CLAUDE.md` | Done. Shared types, checklist, stubs. |
+| T1 | Akram (backend) | `app/api/audit/` | Real audit: Claude + web_search/web_fetch, must finish with a `submit_audit` tool call validated by `AuditResultSchema`; stream `AuditEvent`s; fall back to the fixture if search fails. |
+| T2 | backend | `app/api/build/` (website branch), `lib/prompts/website.ts` | One-page HTML site with Impressum template from the audit. |
+| T3 | backend | `app/api/build/` (replies branch), `lib/prompts/replies.ts` | One draft reply per review in the owner's voice. |
+| T4 | backend | `app/api/guide/`, `lib/prompts/guide.ts` | 3-5 plain-language steps + "what the AI did" note. Impact text may only cite ids from `data/stats.json`. |
+| T5-T6 | design/UX | `app/(ui)/`, `components/`, `app/page.tsx`, `app/globals.css` | Input form -> live audit with tool chips -> tiered cards -> build/guide panel -> summary. |
+| T8 | research | `data/stats.json` | 10-15 sourced stats, replace the two PLACEHOLDER entries. Keep the `Stat` shape; every `item_id` must be a valid `ItemId`. |
+| Pitch | founder | `README.md`, demo video | README, demo script, submission. |
+
+Prompts live in `lib/prompts/` (one file per route) so non-engineers can tweak wording.
+
+## Working with Claude Code on this repo (everyone)
+- Start every session with `git pull`. Tell Claude which task (T1…T8) you are on; it must only edit that task's folders.
+- Commit small and push often; one task per commit message prefix, e.g. `T1: stream real audit events`.
+- If `npm run typecheck` fails because of a contract type, the fix is in your code, not in `lib/types.ts`.
+- When a stub is replaced, delete its `// STUB` comment and keep the response shape identical.

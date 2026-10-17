@@ -24,8 +24,8 @@
 ## How to run it
 ```bash
 cp .env.example .env    # paste your ANTHROPIC_API_KEY into .env
-# then the commands to start it, e.g.
-# python app.py   or   npm install && npm run dev   or   open index.html
+npm install
+npm run dev             # open http://localhost:3000
 ```
 
 **Live link (if any):** <link>
@@ -46,4 +46,6 @@ Teams of 5 (at least 1 builder, 1 product or design, 1 domain expert; plus found
 | [Your name](https://github.com/your-username) *(optional)* | |
 
 ## Credits
-<Open-source libraries, APIs, datasets and assets you used.>
+- [Next.js](https://nextjs.org), [React](https://react.dev), [Tailwind CSS](https://tailwindcss.com)
+- [Anthropic TypeScript SDK](https://github.com/anthropics/anthropic-sdk-typescript) (Claude with web search + web fetch)
+- [zod](https://zod.dev)

@@ -1,0 +1,108 @@
+{
+  "business": {
+    "name": "Le Vent",
+    "category": "Café / Bar",
+    "address": "Weserstraße 32, 12045 Berlin (Neukölln)",
+    "mapsUrl": "https://www.google.com/maps/search/Le+Vent+Berlin"
+  },
+  "items": [
+    {
+      "item_id": "google_profile",
+      "status": "partial",
+      "evidence": "Google Maps listing found for 'Le Vent' on Weserstraße with 4.5 stars from 128 reviews and 6 photos, but no opening hours are listed and the phone number field is empty.",
+      "why": "Most new customers find a café on Google Maps first. Missing hours is the number one reason people give up and go elsewhere.",
+      "impact_stat_id": null,
+      "effort": "minutes"
+    },
+    {
+      "item_id": "website",
+      "status": "missing",
+      "evidence": "No website found in the first 10 search results for 'Le Vent Berlin'. Results are only Google Maps, Yelp, TripAdvisor and a Neukölln blog post. The Google listing has no website link.",
+      "why": "A one-page site is the one place you control: menu, hours, address and a way to contact you, without depending on other platforms.",
+      "impact_stat_id": null,
+      "effort": "hours"
+    },
+    {
+      "item_id": "impressum",
+      "status": "missing",
+      "evidence": "No website exists, so there is no Impressum or privacy notice. Both are legally required as soon as a business website goes live in Germany.",
+      "why": "German law requires an Impressum and a privacy page on any business site. Missing them can lead to warning letters and fines.",
+      "impact_stat_id": null,
+      "effort": "minutes"
+    },
+    {
+      "item_id": "consistent_info",
+      "status": "partial",
+      "evidence": "The Instagram bio lists opening hours 'Mo–Sa 18–02' and the address, but the Google listing has no hours at all. Yelp shows an older phone number that does not appear anywhere else.",
+      "why": "When hours or phone numbers differ between platforms, customers show up to a closed door or call a dead line, and Google ranks the listing lower.",
+      "impact_stat_id": null,
+      "effort": "minutes"
+    },
+    {
+      "item_id": "mobile_friendly",
+      "status": "missing",
+      "evidence": "There is no website to check, so there is nothing that works on a phone yet.",
+      "why": "Most people searching for a café nearby are on their phone. A site that is hard to read on mobile is almost the same as no site.",
+      "impact_stat_id": "stat_mobile_search",
+      "effort": "hours"
+    },
+    {
+      "item_id": "review_replies",
+      "status": "missing",
+      "evidence": "Of the 10 most recent Google reviews (May to October 2026), 0 have an owner reply, including two 2-star reviews about slow service on weekends.",
+      "why": "Replying shows future customers that someone cares, and it is the cheapest way to soften a bad review.",
+      "impact_stat_id": "stat_reviews_read",
+      "effort": "minutes"
+    },
+    {
+      "item_id": "online_booking",
+      "status": "missing",
+      "evidence": "No reservation or booking link on the Google listing or Instagram profile. The Instagram bio says 'Reservierung per DM', which is manual.",
+      "why": "A booking link means people can reserve a table at 23:00 without anyone answering messages.",
+      "impact_stat_id": null,
+      "effort": "hours"
+    },
+    {
+      "item_id": "social_channel",
+      "status": "have",
+      "evidence": "Instagram account @levent.berlin found with roughly 2,100 followers; the most recent post is from 9 October 2026 (a weekend DJ announcement).",
+      "why": "One active channel keeps regulars informed about events and specials and gives new customers a feel for the place.",
+      "impact_stat_id": null,
+      "effort": "minutes"
+    },
+    {
+      "item_id": "card_payment",
+      "status": "unknown",
+      "evidence": "Not visible online. One Yelp review from 2025 mentions 'cash only', but this may be out of date.",
+      "why": "Many guests, especially tourists, no longer carry cash. Card and contactless payment avoids lost sales at the counter.",
+      "impact_stat_id": null,
+      "effort": "hours"
+    },
+    {
+      "item_id": "customer_list",
+      "status": "unknown",
+      "evidence": "Cannot be checked from the web. Ask the owner whether they collect emails or WhatsApp numbers.",
+      "why": "A list of regulars you can message directly is the cheapest way to fill a quiet Tuesday or announce an event.",
+      "impact_stat_id": null,
+      "effort": "hours"
+    },
+    {
+      "item_id": "ai_assistant",
+      "status": "unknown",
+      "evidence": "Cannot be checked from the web. Ask the owner how they handle DMs and common questions.",
+      "why": "An AI helper can answer 'Are you open on Sunday?' and draft replies to messages, saving time every day.",
+      "impact_stat_id": null,
+      "effort": "hours"
+    },
+    {
+      "item_id": "bookkeeping",
+      "status": "unknown",
+      "evidence": "Cannot be checked from the web. Ask the owner how they write invoices and track expenses.",
+      "why": "A simple tool keeps receipts and invoices in one place, so tax time is hours instead of days.",
+      "impact_stat_id": null,
+      "effort": "days"
+    }
+  ],
+  "score": 24,
+  "generatedAt": "2026-10-17T12:00:00.000Z"
+}
