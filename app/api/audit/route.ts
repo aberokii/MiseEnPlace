@@ -6,6 +6,7 @@ import type { AuditEvent, AuditResult, BusinessInput } from '@/lib/types';
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export async function POST(req: Request) {
+  // Convention: ?cached=1 must always stream this fixture flow (stage fallback). T1 keeps this path.
   const input = (await req.json()) as BusinessInput;
   const encoder = new TextEncoder();
 

@@ -120,12 +120,13 @@ The three API routes are currently STUBS that return fixture data (marked `// ST
 | Task | Owner | Folders / files | What it does |
 |---|---|---|---|
 | T0 | Dev 1 | contracts above, scaffold, `CLAUDE.md` | Done. Shared types, checklist, stubs. |
-| T1 | Akram (backend) | `app/api/audit/` | Real audit: Claude + web_search/web_fetch, must finish with a `submit_audit` tool call validated by `AuditResultSchema`; stream `AuditEvent`s; fall back to the fixture if search fails. |
-| T2 | backend | `app/api/build/` (website branch), `lib/prompts/website.ts` | One-page HTML site with Impressum template from the audit. |
-| T3 | backend | `app/api/build/` (replies branch), `lib/prompts/replies.ts` | One draft reply per review in the owner's voice. |
-| T4 | backend | `app/api/guide/`, `lib/prompts/guide.ts` | 3-5 plain-language steps + "what the AI did" note. Impact text may only cite ids from `data/stats.json`. |
+| T1 | Akram (Dev 1) | `app/api/audit/`, `lib/prompts/audit.ts` | Real audit: Claude + web_search/web_fetch, must finish with a `submit_audit` tool call validated by `AuditResultSchema`; stream `AuditEvent`s; fall back to the fixture if search fails. |
+| T2 | Dev 2 | `app/api/build/` (dispatcher + website branch), `lib/build/website.ts`, `lib/prompts/website.ts` | One-page HTML site with Impressum template from the audit. |
+| T3 | Dev 2 | `app/api/build/` (replies branch), `lib/build/reviews.ts`, `lib/prompts/reviews.ts` | One draft reply per review in the owner's voice. Reads `fixtures/<slug>-reviews.json` if present. |
+| T4 | Dev 2 | `app/api/guide/`, `lib/prompts/guide.ts`, `lib/links.ts` | 3-5 plain-language steps + "what the AI did" note. Links only from the `lib/links.ts` allowlist. |
 | T5-T6 | design/UX | `app/(ui)/`, `components/`, `app/page.tsx`, `app/globals.css` | Input form -> live audit with tool chips -> tiered cards -> build/guide panel -> summary. |
-| T8 | research | `data/stats.json` | 10-15 sourced stats, replace the two PLACEHOLDER entries. Keep the `Stat` shape; every `item_id` must be a valid `ItemId`. |
+| T8 | research | `data/stats.json` | 6-8 sourced stats, replace the two PLACEHOLDER entries. Keep the `Stat` shape; every `item_id` must be a valid `ItemId`. |
+| T9 | research & pitch | `fixtures/le-vent-reviews.json`, demo script | 4-5 real public reviews as `Review[]` (text, rating, first name only), Le Vent facts, demo script, backup video. |
 | Pitch | founder | `README.md`, demo video | README, demo script, submission. |
 
 Prompts live in `lib/prompts/` (one file per route) so non-engineers can tweak wording.
@@ -135,3 +136,12 @@ Prompts live in `lib/prompts/` (one file per route) so non-engineers can tweak w
 - Commit small and push often; one task per commit message prefix, e.g. `T1: stream real audit events`.
 - If `npm run typecheck` fails because of a contract type, the fix is in your code, not in `lib/types.ts`.
 - When a stub is replaced, delete its `// STUB` comment and keep the response shape identical.
+
+## Facts the task prompts assume (so nobody has to guess)
+- **Model:** `claude-sonnet-5-5` is the default, read from `ANTHROPIC_MODEL` via `MODEL` in `lib/prompt.ts`. Import `MODEL` instead of hardcoding a model id.
+- **Web tools:** the current server-side tool types are `web_search_20260318` and `web_fetch_20260318` (verified in `@anthropic-ai/sdk` 0.135 and docs.claude.com). Ready-made definitions are exported as `WEB_TOOLS` in `lib/tools.ts`.
+- **`?cached=1` on `/api/audit`** always streams the fixture. This is the stage fallback; T1 must keep it and the UI's "Use demo data" link relies on it.
+- **There is no chat page.** The starter only has the `/api/chat` route. T5 can replace `app/page.tsx` directly; nothing needs moving to `/chat`.
+- **Styling:** Tailwind v4 is installed (`app/globals.css`). CSS Modules + CSS variables in `globals.css` work alongside it; either is fine, no other UI library.
+- **Branches:** work on a branch named after the task (e.g. `t5-cards`), run `npm run typecheck && npm run build`, open a small PR, merge often. `main` must always build.
+
