@@ -99,7 +99,7 @@ If the team is behind, suggest cutting scope instead of working faster.
 
 ## DESIGN: HARD RULES (apply to every task, every Claude Code session)
 The product's look and feel comes ONLY from the design handoff that was merged from the `t5-design-ui` branch
-(commit c509e3a, "company search and audit screens from the Claude Design handoff"). Nothing else.
+(commit a3f9f9c on main, "T5: company search and audit screens from the Claude Design handoff"). Nothing else.
 1. **Use only the design-branch code for UI.** Every screen, component, colour, font, spacing, button, badge, card and
    animation must come from, or be built with, these files and nothing else:
    - `components/search/SearchHome.tsx` + `search.css` + `companies.ts` (home: company search)
