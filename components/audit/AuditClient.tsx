@@ -2,10 +2,11 @@
 import { useEffect, useRef } from "react";
 import "leaflet/dist/leaflet.css";
 import "./audit.css";
+import "./panel.css";
 import { AUDIT_MARKUP } from "./auditMarkup";
 import { startAudit } from "./auditDemo";
 
-// Confirm → animated audit → results, as designed. Still runs on the design's demo data, not on /api/audit yet.
+// Confirm → animated audit → results, as designed. Data comes from /api/audit; card buttons open the build/guide panel.
 export default function AuditClient() {
   const started = useRef(false);
 
