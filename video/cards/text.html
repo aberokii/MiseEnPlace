@@ -4,13 +4,18 @@
    Words pop in one after another on the design easing; lines are stacked. Only design tokens: Inter/Syne, --ink, --red, --mute, pink pill. */
 .kin{position:absolute;left:120px;right:120px;display:flex;flex-direction:column;gap:18px;align-items:flex-start}
 .kin.center{top:50%;transform:translateY(-50%)}
-.kin.bottom{bottom:120px}
+.kin.bottom{bottom:24px;left:220px;right:220px}
+.kin.bottom .ln{font-size:46px;white-space:nowrap;flex-wrap:nowrap}
 .kin.top{top:110px}
 .kin.mid-right{top:50%;left:1000px;transform:translateY(-50%)}
 .kin.stage{top:120px;left:560px;right:80px}
 .kin.stage-bottom{bottom:100px;left:560px;right:80px}
-.ln{display:flex;flex-wrap:wrap;gap:0 .28em;font-weight:800;font-size:84px;line-height:1.05;letter-spacing:-.03em;color:var(--ink);margin:0}
-.ln.small{font-size:44px;font-weight:600;letter-spacing:-.02em;color:var(--mute)}
+.ln{display:flex;flex-wrap:wrap;gap:0 .28em;font-family:Syne,Inter,sans-serif;font-weight:800;font-size:84px;line-height:1.08;letter-spacing:-.03em;color:var(--ink);margin:0}
+.kin.left{top:50%;left:120px;right:1020px;transform:translateY(-50%)}
+.kin.big .ln{font-size:104px}
+.w.c2{color:var(--mute)}
+.kin.full{position:absolute}
+.ln.small{font-size:44px;font-weight:700;letter-spacing:-.02em;color:var(--mute)}
 .w{display:inline-block;white-space:nowrap}
 .w.acc{color:var(--red)}
 .pill .w{background:#fff;padding:.08em .32em;border-radius:999px;box-shadow:0 6px 20px rgba(0,0,0,.12)}
@@ -20,21 +25,22 @@
 .w.gone{animation:pp 420ms var(--ease) both, fo 360ms var(--ease) both;animation-delay:var(--d),var(--o)}
 .logo.kin-logo{position:absolute;left:120px;top:110px;font-size:40px;opacity:0;animation:fu 500ms var(--ease) both}
 </style>
-<body class="alpha">
+<body class="alpha" id="bd">
 <div id="k" class="kin"></div>
 <script src="common.js"></script>
 <script>
 const q=new URLSearchParams(location.search);
 const lines=(q.get('lines')||'Hello').split('|');
 const acc=new Set((q.get('accent')||'').split(',').filter(Boolean).map(s=>s.toLowerCase()));
-const k=document.getElementById('k');
-k.className='kin '+(q.get('pos')||'center')+' '+(q.get('style')||'pop')+(q.get('pill')?' pill':'');
+const k=document.getElementById('k'); if(q.get('bg')) document.getElementById('bd').className='';
+k.className='kin '+(q.get('pos')||'center')+' '+(q.get('style')||'pop')+(q.get('pill')?' pill':'')+(q.get('big')?' big':'');
+const c2=new Set((q.get('mute')||'').split(',').filter(Boolean).map(s=>s.toLowerCase()));
 const step=+(q.get('step')||130), gap=+(q.get('gap')||350), hold=+(q.get('hold')||0), start=+(q.get('start')||200);
 let t=start;
 lines.forEach((line,li)=>{
   const p=document.createElement('p'); p.className='ln'+(line.startsWith('~')?' small':''); line=line.replace(/^~/,'');
   line.split(' ').forEach(word=>{
-    const s=document.createElement('span'); s.className='w'+(acc.has(word.replace(/[.,!?]/g,'').toLowerCase())?' acc':'');
+    const s=document.createElement('span'); const key=word.replace(/[.,!?]/g,'').toLowerCase(); s.className='w'+(acc.has(key)?' acc':'')+(c2.has(key)?' c2':'');
     s.textContent=word; s.style.setProperty('--d',t+'ms'); if(hold){s.classList.add('gone');s.style.setProperty('--o',(hold)+'ms');}
     p.appendChild(s); t+=step;
   });

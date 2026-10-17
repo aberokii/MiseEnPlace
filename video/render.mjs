@@ -12,19 +12,22 @@ const FFMPEG = process.env.FFMPEG || path.join(process.env.HOME, '.local/bin/ffm
 const FPS = 30;
 // duration in seconds; alpha = transparent overlay (ProRes 4444 .mov), else white-background .mp4
 const T = (q, dur) => ({ dur, alpha: true, file: 'text', query: '?' + q });
+const C = (q, dur, alpha = true) => ({ dur, alpha, file: 'text', query: '?' + q });
 const CARDS = {
-  badges:     { dur: 7,  alpha: true },
-  lowerthird: { dur: 6,  alpha: true },
-  endcard:    { dur: 8,  alpha: false },
-  // kinetic text overlays (transparent), go on top of the product recordings
-  t_hook:     T('lines=Great coffee.|Four point six stars.|Online, it barely exists.&accent=barely,exists&pos=bottom&style=pop', 6),
-  t_gaps:     T('lines=No website.|1 reply to 321 reviews.|3 different phone numbers.&accent=no,1,3&pos=bottom&style=pop&pill=1&gap=500', 7),
-  t_name:     T('lines=Start with the one thing|every owner knows.|~Your business name.&accent=name&pos=bottom&style=rise&pill=1', 5),
-  t_audit:    T('lines=Claude checks what|a customer would find.&accent=customer&pos=stage&style=pop', 5),
-  t_learn:    T('lines=Every check is shown.|Every check is explained.&accent=shown,explained&pos=stage&style=pop', 5),
-  t_result:   T('lines=What is missing.|Why it matters.|How long it takes.&accent=missing,matters,takes&pos=bottom&style=pop&pill=1&gap=450', 6),
-  t_build:    T('lines=Two of these|the AI builds on the spot.&accent=builds&pos=bottom&style=pop&pill=1', 5),
-  t_pitch:    T('lines=Type your business name.|Two minutes later|the first fix is built.&accent=built&pos=center&style=pop&gap=450', 7),
+  endcard:  { dur: 8.2, alpha: false },
+  v_intro:  C('bg=1&lines=Small business owners know|they should be online.|~But not what to do first.|~Or if it is even worth it.&accent=online,first&pos=center&style=pop&gap=600&start=400', 8, false),
+  v_phone:  C('lines=Meet Mise en Place.|~Type your business name.|~See what is missing online.|~Fix it in minutes.&accent=mise,en,place&mute=&pos=left&style=pop&gap=900&start=800&step=160', 20.3),
+  c01: C('lines=Type the name of your business.&accent=name&pos=bottom&style=pop', 6),
+  c02: C('lines=Check that it is really you.&accent=you&pos=bottom&style=pop', 5),
+  c03: C('lines=Mise en Place checks your Google profile.&accent=google,profile&pos=bottom&style=pop', 5.5),
+  c04: C('lines=Your reviews. And if anyone replied.&accent=replied&pos=bottom&style=pop', 5.5),
+  c05: C('lines=Where you are listed. And where you are not.&accent=not&pos=bottom&style=pop', 5.5),
+  c06: C('lines=Who shows up near you.&accent=near&pos=bottom&style=pop', 5),
+  c07: C('lines=Do you have a website?&accent=website&pos=bottom&style=pop', 4),
+  c08: C('lines=Does it work on a phone?&accent=phone&pos=bottom&style=pop', 4),
+  c09: C('lines=Your score. And your next three steps.&accent=score,steps&pos=bottom&style=pop', 6),
+  c10: C('lines=Must have. Good to have. Nice to have.&accent=must,good,nice&pos=bottom&style=pop', 7),
+  c11: C('lines=Build the missing pieces in minutes.&accent=minutes&pos=bottom&style=pop', 7),
 };
 
 const args = process.argv.slice(2);
