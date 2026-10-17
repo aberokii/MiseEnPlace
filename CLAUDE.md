@@ -97,6 +97,32 @@ If the team is behind, suggest cutting scope instead of working faster.
 
 # Mise en Place: how this repo is split (read before coding)
 
+## DESIGN: HARD RULES (apply to every task, every Claude Code session)
+The product's look and feel comes ONLY from the design handoff that was merged from the `t5-design-ui` branch
+(commit c509e3a, "company search and audit screens from the Claude Design handoff"). Nothing else.
+1. **Use only the design-branch code for UI.** Every screen, component, colour, font, spacing, button, badge, card and
+   animation must come from, or be built with, these files and nothing else:
+   - `components/search/SearchHome.tsx` + `search.css` + `companies.ts` (home: company search)
+   - `components/audit/AuditClient.tsx` + `auditMarkup.ts` + `audit.css` + `auditDemo.js` (confirm -> live audit -> results)
+   - `components/DesignFonts.tsx` (Inter + Syne), `app/page.tsx`, `app/(ui)/audit/page.tsx`
+   - design tokens are the CSS variables in `components/audit/audit.css` `:root`
+     (`--red #FF385C`, `--red-d`, `--red-ink`, `--pink`, `--ink #222`, `--mute #717171`, `--line`, `--soft`, `--ok`, `--ok-bg`, `--warn`, `--warn-bg`, `--ease`).
+   - reusable classes: `.btn.pri` / `.btn.sec` / `.btn.sm`, `.card`, `.chip`, `.st.have|.partial|.missing|.ask` (status badges), `.eyebrow`, `.lede`, `.tier`, `.legend`, `.next`, `.top`, `.logo`, `.steps`.
+2. **Do not invent new visuals.** No new colours, fonts, radii, shadows, icons sets or layouts. No Tailwind utility classes
+   for product UI, no UI libraries, no component kits, no "quick restyle". If a screen you need does not exist in the design,
+   compose it from the classes and tokens above and keep it visually identical in spirit. Ask the designer before adding anything.
+3. **Do not delete or rewrite the design files.** Wiring real data into them is fine (see 4); changing their look is not.
+4. **Wiring real data = replace demo data, keep the markup.** `auditDemo.js` currently runs on demo data for Café Le Vent.
+   The remaining UI work (T5/T6) is to feed it from `/api/audit`, `/api/build` and `/api/guide` while keeping the exact same
+   markup, classes and animations. Known mappings the wiring must handle without touching `lib/types.ts`:
+   - design status `ask` == contract status `unknown`
+   - design item ids `gbp, web, imp, nap, mob, rev, book, soc, pay, list, ai, book2` == contract ids
+     `google_profile, website, impressum, consistent_info, mobile_friendly, review_replies, online_booking, social_channel, card_payment, customer_list, ai_assistant, bookkeeping` (same order)
+   - the home search passes `?name=&city=&trade=` to `/audit`; `trade` is our `category`.
+5. **Backend tasks do not touch UI.** T1-T4 and T8 never edit anything under `components/` or `app/(ui)/`.
+6. `leaflet` (map) is the one UI dependency the design added. Do not add others.
+
+
 Product spec: `docs/PRD.md`. Stack: Next.js (App Router) + TypeScript strict + Tailwind + `@anthropic-ai/sdk` + `zod`, deployed on Vercel.
 Run locally: `npm install`, `cp .env.example .env` (paste `ANTHROPIC_API_KEY`), `npm run dev`. Before pushing: `npm run typecheck && npm run build`.
 No new dependencies without telling the team in the PR. The API key stays server-side (route handlers only, never in client components).
@@ -124,7 +150,7 @@ The three API routes are currently STUBS that return fixture data (marked `// ST
 | T2 | Dev 2 | `app/api/build/` (dispatcher + website branch), `lib/build/website.ts`, `lib/prompts/website.ts` | One-page HTML site with Impressum template from the audit. |
 | T3 | Dev 2 | `app/api/build/` (replies branch), `lib/build/reviews.ts`, `lib/prompts/reviews.ts` | One draft reply per review in the owner's voice. Reads `fixtures/<slug>-reviews.json` if present. |
 | T4 | Dev 2 | `app/api/guide/`, `lib/prompts/guide.ts`, `lib/links.ts` | 3-5 plain-language steps + "what the AI did" note. Links only from the `lib/links.ts` allowlist. |
-| T5-T6 | design/UX | `app/(ui)/`, `components/`, `app/page.tsx`, `app/globals.css` | Input form -> live audit with tool chips -> tiered cards -> build/guide panel -> summary. |
+| T5-T6 | Dev 3 + designer | `app/(ui)/`, `components/`, `app/page.tsx`, `app/globals.css` | Design screens are merged (see DESIGN rules above). Remaining: wire `/audit` to `/api/audit` (live tool events, real statuses), card buttons to `/api/build` and `/api/guide`, keep the design 1:1. |
 | T8 | research | `data/stats.json` | 6-8 sourced stats, replace the two PLACEHOLDER entries. Keep the `Stat` shape; every `item_id` must be a valid `ItemId`. |
 | T9 | research & pitch | `fixtures/le-vent-reviews.json`, demo script | 4-5 real public reviews as `Review[]` (text, rating, first name only), Le Vent facts, demo script, backup video. |
 | Pitch | founder | `README.md`, demo video | README, demo script, submission. |
@@ -141,7 +167,7 @@ Prompts live in `lib/prompts/` (one file per route) so non-engineers can tweak w
 - **Model:** `claude-sonnet-5-5` is the default, read from `ANTHROPIC_MODEL` via `MODEL` in `lib/prompt.ts`. Import `MODEL` instead of hardcoding a model id.
 - **Web tools:** the current server-side tool types are `web_search_20260318` and `web_fetch_20260318` (verified in `@anthropic-ai/sdk` 0.135 and docs.claude.com). Ready-made definitions are exported as `WEB_TOOLS` in `lib/tools.ts`.
 - **`?cached=1` on `/api/audit`** always streams the fixture. This is the stage fallback; T1 must keep it and the UI's "Use demo data" link relies on it.
-- **There is no chat page.** The starter only has the `/api/chat` route. T5 can replace `app/page.tsx` directly; nothing needs moving to `/chat`.
-- **Styling:** Tailwind v4 is installed (`app/globals.css`). CSS Modules + CSS variables in `globals.css` work alongside it; either is fine, no other UI library.
+- **There is no chat page.** The starter only has the `/api/chat` route. `app/page.tsx` is already the design's search home.
+- **Styling:** the design's own plain CSS files (`components/**/*.css`) are the only styling. Tailwind is installed from the scaffold but must NOT be used for product UI (see DESIGN rules).
 - **Branches:** work on a branch named after the task (e.g. `t5-cards`), run `npm run typecheck && npm run build`, open a small PR, merge often. `main` must always build.
 
