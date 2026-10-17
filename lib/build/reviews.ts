@@ -1,6 +1,6 @@
 // "Build it: review reply drafts" (T3). Called by app/api/build/route.ts.
 // Reviews come from, in this order: the request body, fixtures/<slug>-reviews.json, Claude + web search.
-import { readFile } from 'node:fs/promises';
+import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import Anthropic from '@anthropic-ai/sdk';
 import { z } from 'zod';
@@ -77,9 +77,24 @@ export function slugify(name: string): string {
     .replace(/^-+|-+$/g, '');
 }
 
+// "cafe-le-vent" also finds le-vent-reviews.json: the home search says "Café Le Vent", the research fixture "Le Vent".
+async function findFixtureFile(slug: string): Promise<string | undefined> {
+  let files: string[];
+  try {
+    files = await readdir(FIXTURES_DIR);
+  } catch {
+    return undefined;
+  }
+  const exact = `${slug}-reviews.json`;
+  if (files.includes(exact)) return exact;
+  return files.find((f) => f.endsWith('-reviews.json') && slug.endsWith(`-${f.slice(0, -'-reviews.json'.length)}`));
+}
+
 async function readFixtureReviews(slug: string): Promise<Review[]> {
   if (!slug) return [];
-  const file = path.join(FIXTURES_DIR, `${slug}-reviews.json`);
+  const name = await findFixtureFile(slug);
+  if (!name) return [];
+  const file = path.join(FIXTURES_DIR, name);
   let raw: string;
   try {
     raw = await readFile(file, 'utf8');

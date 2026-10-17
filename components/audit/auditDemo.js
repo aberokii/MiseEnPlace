@@ -1,6 +1,19 @@
 // Audit flow from the Claude Design handoff: confirm match → animated audit → results.
 // Statuses, reviews and competitors are demo data for Café Le Vent; Claude replaces them step by step.
 // Call once after the markup is in the page. `L` is the Leaflet module.
+// T5/T6 wiring: runAudit streams /api/audit and replaces the demo ITEMS with the real result;
+// card buttons call /api/build and /api/guide and show the result in a side panel (panel.css).
+import STATS from '@/data/stats.json';
+
+// Design item ids <-> contract ItemIds (same order as lib/checklist.ts). Design status 'ask' == contract 'unknown'.
+const ID_TO_CONTRACT = {gbp:'google_profile',web:'website',imp:'impressum',nap:'consistent_info',mob:'mobile_friendly',rev:'review_replies',book:'online_booking',soc:'social_channel',pay:'card_payment',list:'customer_list',ai:'ai_assistant',book2:'bookkeeping'};
+const CONTRACT_TO_ID = Object.fromEntries(Object.entries(ID_TO_CONTRACT).map(([k,v])=>[v,k]));
+const EFFORT_LABEL = {minutes:'Minutes',hours:'Hours',days:'Days'};
+// Loader phases that map onto one real checklist item.
+const PHASE_ITEM = {gbp:'gbp',rev:'rev',dir:'nap',map:'gbp',web:'web',mob:'mob'};
+const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const safeUrl = u => /^https?:\/\//i.test(String(u||'')) ? String(u) : '';
+
 export function startAudit(L) {
 const IC = {
   have:'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>',
@@ -36,6 +49,9 @@ const qs = new URLSearchParams(location.search);
 const B = qs.get('name') && qs.get('name') !== 'Café Le Vent'
   ? {name:qs.get('name'),cat:(qs.get('trade')||'Local business')+' · '+(qs.get('city')||''),addr:qs.get('city')||'',ll:CITIES[qs.get('city')]||CITIES.Berlin,src:['Google','Handelsregister'],exact:false}
   : {name:'Café Le Vent',cat:'Coffee bar · Berlin-Mitte',addr:'Köpenicker Str. 44, 10179 Berlin',ll:[52.50895,13.42285],src:['Google Maps','Yelp','Tripadvisor','Uber Eats'],exact:true};
+const INPUT = {name:B.name, city:qs.get('city')||'Berlin', category:qs.get('trade')||'Café'};
+const CACHED = qs.get('cached')==='1';
+let AUDIT = null, auditP = null;
 const initials = B.exact ? 'LV' : B.name.split(/\s+/).filter(w=>/^[A-ZÄÖÜ]/.test(w)).slice(0,2).map(w=>w[0]).join('');
 const $ = id => document.getElementById(id);
 $('miniName').textContent=B.name;$('mName').textContent=B.name;$('mCat').textContent=B.cat;$('mAddr').textContent=B.addr;$('mAv').textContent=initials;
@@ -75,7 +91,7 @@ function rowHTML(it,state){
   const s = state==='wait'?'wait':it.st;
   return `<div class="row ${state==='wait'?'wait':''} ${state==='now'?'now':''}" id="r-${it.id}">
     <div class="ico ${state==='now'?'':s}">${state==='now'?'<div class="spin"></div>':state==='wait'?'':IC[s]}</div>
-    <div><div class="t">${it.t}</div><div class="e">${state==='done'?it.ev:state==='now'?'Checking…':''}</div></div>
+    <div><div class="t">${it.t}</div><div class="e">${state==='done'?esc(it.ev):state==='now'?'Checking…':''}</div></div>
     <div>${state==='done'?`<span class="st ${s} fade">${LABEL[s]}</span>`:''}</div></div>`;
 }
 function renderAudit(cur){
@@ -116,7 +132,8 @@ function starSVG(n){let s='';for(let i=0;i<5;i++)s+='<svg width="16" height="16"
 function renderPhases(cur){
   $('phList').innerHTML=PH.map((p,i)=>{
     const st=i<cur?'done':i===cur?'now':'';
-    const r=i<cur?RESL[NP&&p.res!=='info'?'missing':p.res]:null;
+    const realIt = AUDIT && PHASE_ITEM[p.k] ? ITEMS.find(x=>x.id===PHASE_ITEM[p.k]) : null;
+    const r=i<cur?(realIt?[LABEL[realIt.st],realIt.st]:RESL[NP&&p.res!=='info'?'missing':p.res]):null;
     return '<li class="'+st+'"><span class="pi">'+(i<cur?IC.have:'')+'</span>'+p.t+(r?'<span class="res st '+r[1]+'">'+r[0]+'</span>':'')+'</li>';
   }).join('');
 }
@@ -175,8 +192,51 @@ const SCENE = {
   },
   mob(){ document.querySelectorAll('#meter .m').forEach((m,i)=>{m.classList.remove('in');setTimeout(()=>m.classList.add('in'),400+i*500);}); }
 };
+// ---------- /api/audit ----------
+async function fetchAudit(){
+  const res = await fetch('/api/audit'+(CACHED?'?cached=1':''),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(INPUT)});
+  if(!res.ok||!res.body) throw new Error('The check could not start ('+res.status+').');
+  const reader=res.body.getReader(), dec=new TextDecoder();
+  let buf='', result=null;
+  for(;;){
+    const {done,value}=await reader.read();
+    if(value) buf+=dec.decode(value,{stream:!done});
+    const lines=buf.split('\n'); buf=done?'':lines.pop();
+    for(const line of lines){
+      if(!line.trim()) continue;
+      const ev=JSON.parse(line);
+      if(ev.type==='tool') console.log('[audit]',ev.name,ev.detail||'');
+      else if(ev.type==='error') throw new Error(ev.message||'The check failed.');
+      else if(ev.type==='result') result=ev.result;
+    }
+    if(done) break;
+  }
+  if(!result) throw new Error('The check ended without a result.');
+  return result;
+}
+function applyAudit(result){
+  AUDIT=result;
+  result.items.forEach(a=>{
+    const it=ITEMS.find(x=>x.id===CONTRACT_TO_ID[a.item_id]); if(!it) return;
+    it.st=a.status==='unknown'?'ask':a.status; it.ev=a.evidence; it.why=a.why||it.why;
+    it.eff=EFFORT_LABEL[a.effort]||it.eff; it.effort=a.effort; it.stat=a.impact_stat_id;
+  });
+}
+// The current ITEMS as a contract AuditResult, for /api/build and /api/guide (also covers "no presence").
+function toAudit(){
+  const business = AUDIT ? AUDIT.business : {name:B.name,category:INPUT.category,address:B.addr};
+  const items = ITEMS.map(it=>({item_id:ID_TO_CONTRACT[it.id],status:it.st==='ask'?'unknown':it.st,evidence:it.ev,why:it.why,impact_stat_id:STATS.some(s=>s.id===it.stat)?it.stat:null,effort:it.effort||'hours'}));
+  return {business,items,score:AUDIT?AUDIT.score:0,generatedAt:AUDIT?AUDIT.generatedAt:new Date().toISOString()};
+}
+function auditFailed(err){
+  console.error('[audit]',err);
+  const demo=new URLSearchParams(location.search); demo.set('cached','1');
+  $('eta').innerHTML=esc(err.message||'The check failed.')+' <a href="?'+esc(demo.toString())+'">Use demo data</a> · <a href="">Try again</a>';
+}
+
 function runAudit(){
   if(running) return; running=true;
+  if(!NP && !auditP) auditP=fetchAudit().then(applyAudit);
   $('lTitle').textContent="We're looking at "+B.name;
   $('gName').textContent=B.name;$('pName').textContent=B.name;$('gAv').textContent=initials;$('gAddr').textContent=B.addr.split(',')[0];
   $('loader').classList.remove('hide'); document.body.style.overflow='hidden';
@@ -184,8 +244,11 @@ function runAudit(){
   const tick=setInterval(()=>{elapsed+=500;const left=Math.max(0,Math.ceil((TOTAL-elapsed)/1000));$('eta').textContent=left>1?'about '+left+' seconds left':'almost done';$('lFill').style.width=Math.min(100,elapsed/TOTAL*100)+'%';},500);
   const next=()=>{
     if(i>=PH.length){
-      clearInterval(tick); renderPhases(PH.length); showScene('done'); $('eta').textContent='done'; $('lFill').style.width='100%';
-      setTimeout(()=>{ $('loader').classList.add('hide'); document.body.style.overflow=''; setStep(2); renderResults(); running=false; },1400);
+      clearInterval(tick); $('eta').textContent='almost done'; $('lFill').style.width='100%';
+      (auditP||Promise.resolve()).then(()=>{
+        renderPhases(PH.length); showScene('done'); $('eta').textContent='done';
+        setTimeout(()=>{ $('loader').classList.add('hide'); document.body.style.overflow=''; setStep(2); renderResults(); running=false; },1400);
+      },auditFailed);
       return;
     }
     const p=PH[i]; renderPhases(i); $('tipText').innerHTML=p.tip;
@@ -196,7 +259,10 @@ function runAudit(){
   next();
 }
 $('goAudit').onclick=runAudit;
-$('goResults').onclick=()=>{setStep(2);renderResults();};
+$('goResults').onclick=()=>{
+  if(NP||AUDIT){setStep(2);renderResults();return;}
+  runAudit();
+};
 $('noPresence').onclick=e=>{e.preventDefault();NP=true;ITEMS.forEach(it=>{if(it.st!=='ask')it.st='missing';});runAudit();};
 
 // results
@@ -208,7 +274,8 @@ function renderResults(){
   requestAnimationFrame(()=>{$('ringArc').style.strokeDashoffset=452.4*(1-score/known.length);});
   const c=s=>ITEMS.filter(i=>i.st===s).length;
   $('legend').innerHTML=['have','partial','missing','ask'].filter(s=>c(s)).map(s=>`<span class="st ${s}">${c(s)} ${LABEL[s]}</span>`).join('');
-  const top=['web','rev','gbp'].map(id=>ITEMS.find(i=>i.id===id));
+  const open=ITEMS.filter(i=>i.st==='missing'||i.st==='partial');
+  const top=[...open.filter(i=>i.act==='build'),...open.filter(i=>i.act!=='build')].slice(0,3);
   $('nextSteps').innerHTML='<h4>Your top three next steps</h4>'+top.map((it,n)=>`<div class="nx"><span class="num">${n+1}</span>${it.t.replace(' or one-page site','')}<span class="ef">${it.eff}</span></div>`).join('');
   $('tiers').innerHTML=TIERS.map(([k,name,sub])=>`<div class="tierhd fade"><h2>${name}</h2><span>${sub}</span></div><div class="grid">${ITEMS.filter(i=>i.tier===k).map(cardHTML).join('')}</div>`).join('');
   renderComp();
@@ -228,19 +295,79 @@ function renderComp(){
   '</div><p style="font-size:13px;color:var(--mute);margin:14px 0 0">Sample competitor data for the demo.</p>';
 }
 function cardHTML(it){
-  const impact = it.stat
-    ? `<div class="impact"><b>Impact</b> · <span class="ph">${it.stat}</span><span class="s">Figure and source from the stat library</span></div>`
+  const stat = STATS.find(s=>s.id===it.stat);
+  const statUrl = stat && safeUrl(stat.url);
+  const impact = stat
+    ? `<div class="impact"><b>Impact</b> · ${esc(stat.value)} ${esc(stat.claim)}<span class="s">${statUrl?`<a href="${esc(statUrl)}" target="_blank" rel="noopener">Source: ${esc(stat.source)}, ${esc(stat.year)}</a>`:`Source: ${esc(stat.source)}, ${esc(stat.year)}`}</span></div>`
     : `<div class="impact"><b>Impact</b> · ${it.id==='imp'?'Legal requirement in Germany (§ 5 DDG).':'No sourced figure. Reason given in words above.'}</div>`;
   const action = it.st==='have' ? `<span class="effort">${IC.have} Nothing to do</span>`
     : it.st==='ask' ? `<div class="ask-q"><button>Yes</button><button>No</button></div>`
-    : it.act==='build' ? `<button class="btn pri sm">${IC.spark}Build it</button>` : `<button class="btn sec sm">${IC.guide}Guide me</button>`;
+    : it.act==='build' ? `<button class="btn pri sm" data-act="build" data-id="${it.id}">${IC.spark}Build it</button>` : `<button class="btn sec sm" data-act="guide" data-id="${it.id}">${IC.guide}Guide me</button>`;
   return `<article class="ic-card fade">
     <div class="top2"><span class="st ${it.st}">${LABEL[it.st]}</span><span class="effort">${IC.clock}${it.eff}</span></div>
     <h3>${it.st==='ask'?it.t+'?':it.t}</h3>
-    <p>${it.why}</p>
-    <div class="ev">${IC.ev}<span>${it.ev}</span></div>
+    <p>${esc(it.why)}</p>
+    <div class="ev">${IC.ev}<span>${esc(it.ev)}</span></div>
     ${it.st==='have'?'':impact}
     <div class="foot">${action}</div>
   </article>`;
+}
+
+// ---------- Build / guide panel (T6) ----------
+const panel=document.createElement('div');
+panel.className='mp-back hide';
+panel.innerHTML='<div class="mp" role="dialog" aria-modal="true" aria-labelledby="mpTitle" tabindex="-1"><div class="mp-hd"><div><p class="eyebrow" id="mpEyebrow"></p><h2 id="mpTitle"></h2></div><button class="btn sec sm" id="mpClose">Close</button></div><div id="mpBody" aria-live="polite"></div></div>';
+document.body.appendChild(panel);
+let opener=null, panelReq=0;
+function closePanel(){ panelReq++; panel.classList.add('hide'); document.body.style.overflow=''; if(opener) opener.focus(); opener=null; }
+panel.addEventListener('click',e=>{ if(e.target===panel) closePanel(); });
+$('mpClose').onclick=closePanel;
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&!panel.classList.contains('hide')) closePanel(); });
+$('tiers').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-act]'); if(!b) return;
+  opener=b; openPanel(b.dataset.act,ITEMS.find(i=>i.id===b.dataset.id));
+});
+const slug=n=>n.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')||'website';
+const learnBox=t=>`<div class="impact"><b>What the AI just did</b><span class="s">${esc(t)}</span></div>`;
+
+async function openPanel(kind,it){
+  const req=++panelReq;
+  const isReplies=kind==='build'&&it.id==='rev';
+  $('mpEyebrow').textContent=kind==='build'?'Build it':'Guide me';
+  $('mpTitle').textContent=it.t;
+  $('mpBody').innerHTML=`<div class="tool"><div class="spin"></div><span class="k">${kind==='build'?`Claude is building your ${isReplies?'review replies':'website'}…`:'Claude is writing your steps…'}</span></div>`;
+  panel.classList.remove('hide'); document.body.style.overflow='hidden'; panel.querySelector('.mp').focus();
+  try{
+    const url=kind==='build'?'/api/build':'/api/guide';
+    const body=kind==='build'?{item_id:isReplies?'review_replies':'website',audit:toAudit()}:{item_id:ID_TO_CONTRACT[it.id],audit:toAudit()};
+    const res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok) throw new Error(data.error||'Something went wrong. Please try again.');
+    if(req!==panelReq) return;
+    if(kind==='guide') renderGuide(data); else if(data.kind==='html') renderSite(data); else renderReplies(data);
+  }catch(err){
+    if(req!==panelReq) return;
+    console.error('[panel]',err);
+    $('mpBody').innerHTML=`<p class="lede">${esc(err.message)}</p><button class="btn pri sm" id="mpRetry">Try again</button>`;
+    $('mpRetry').onclick=()=>openPanel(kind,it);
+  }
+}
+function renderSite({html,learn}){
+  $('mpBody').innerHTML=`<div class="btns"><button class="btn pri sm" id="mpDl">Download .html</button><button class="btn sec sm" id="mpOpen">Open in new tab</button></div><iframe sandbox="" title="Website preview"></iframe>${learnBox(learn)}`;
+  $('mpBody').querySelector('iframe').srcdoc=html;
+  const blobUrl=()=>URL.createObjectURL(new Blob([html],{type:'text/html'}));
+  $('mpDl').onclick=()=>{const a=document.createElement('a');a.href=blobUrl();a.download=slug(toAudit().business.name)+'.html';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);};
+  $('mpOpen').onclick=()=>window.open(blobUrl(),'_blank','noopener');
+}
+function renderReplies({replies,learn}){
+  const list=replies.length?replies.map((r,i)=>`<div class="rv"><div class="rh"><span class="stars">${r.review.rating?starSVG(r.review.rating):''}</span><span>${esc(r.review.author||'Google user')}</span></div><p>“${esc(r.review.text)}”</p><div class="impact">${esc(r.reply)}</div><div class="rf"><button class="btn sec sm" data-copy="${i}">Copy reply</button></div></div>`).join(''):'';
+  $('mpBody').innerHTML=`<div class="next">${list}</div>${learnBox(learn)}`;
+  $('mpBody').querySelectorAll('[data-copy]').forEach(b=>b.onclick=async()=>{
+    try{ await navigator.clipboard.writeText(replies[+b.dataset.copy].reply); b.textContent='Copied'; }
+    catch{ b.textContent='Select and copy the text above'; }
+  });
+}
+function renderGuide({steps,learn}){
+  $('mpBody').innerHTML=`<div class="next">${steps.map((st,n)=>{const l=safeUrl(st.link);return `<div class="nx"><span class="num">${n+1}</span><div><b>${esc(st.title)}</b><span class="s">${esc(st.detail)}${l?` <a href="${esc(l)}" target="_blank" rel="noopener">Open ↗</a>`:''}</span></div></div>`;}).join('')}</div>${learnBox(learn)}`;
 }
 }

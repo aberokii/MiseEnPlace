@@ -1,0 +1,14 @@
+/* Build / guide panel (T6). Composed from the design's tokens and classes in audit.css; no new colours or fonts. */
+.mp-back{position:fixed;inset:0;z-index:2000;background:rgba(34,34,34,.4);display:flex;justify-content:flex-end}
+.mp{background:#fff;width:100%;max-width:640px;height:100%;overflow-y:auto;padding:28px;display:flex;flex-direction:column;gap:18px;box-shadow:0 6px 20px rgba(0,0,0,.12);animation:fu 420ms var(--ease) both}
+.mp:focus{outline:none}
+.mp-hd{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.mp-hd h2{margin:0;font-size:26px;letter-spacing:-.03em}
+.mp-hd .eyebrow{margin-bottom:6px}
+.mp .tool{margin:0}
+.mp iframe{width:100%;height:70vh;border:1px solid var(--line);border-radius:24px;background:#fff}
+.mp .btns{margin-top:0}
+.mp .nx{align-items:flex-start}
+.mp .nx .s{font-weight:400;line-height:1.5}
+.mp .rv .impact{white-space:pre-line}
+@media (max-width:640px){.mp{padding:20px}}
