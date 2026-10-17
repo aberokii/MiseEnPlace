@@ -30,3 +30,4 @@ next-env.d.ts
 # Demo video renders and footage
 video/out/
 video/footage/
+.env*

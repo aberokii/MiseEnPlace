@@ -1,6 +1,6 @@
 # PRD: Mise en Place, an AI Coach for Small Businesses (Impact Lab MVP)
 
-Product: Mise en Place · Team: BizOnPlus · Claude Impact Lab Berlin · 17 Oct 2026
+Product: Mise en Place · Claude Impact Lab Berlin · 17 Oct 2026
 
 ## TL;DR
 
